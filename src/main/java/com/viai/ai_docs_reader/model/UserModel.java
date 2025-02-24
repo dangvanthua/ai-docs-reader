@@ -40,7 +40,7 @@ public class UserModel {
             createdAt = now;
         }
         updatedAt = now;
-        
+
         if(timezone == null || timezone.isEmpty()) {
             timezone = "UTC";
         }

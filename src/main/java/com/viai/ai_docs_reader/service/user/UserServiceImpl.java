@@ -34,7 +34,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserModel, Long, UserReposi
                 .passwordHash(passwordHashed)
                 .timezone(userRequest.getTimeZone())
                 .build();
-        return repository.save(userModel);
+        return super.save(userModel);
     }
 
 
