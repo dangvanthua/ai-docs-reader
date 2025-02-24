@@ -1,6 +1,6 @@
 package com.viai.ai_docs_reader.exception;
 
-import com.viai.ai_docs_reader.exception.error.ResourceNotFoundException;
+import com.viai.ai_docs_reader.exception.error.BusinessException;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,12 +22,13 @@ public class GlobalExceptionHandler {
         this.messageSource = messageSource;
     }
 
-    @ExceptionHandler(ResourceNotFoundException.class)
+    @ExceptionHandler(BusinessException.class)
     public ResponseEntity<ErrorResponse> handleResourceNotFound(
-            ResourceNotFoundException ex,
+            BusinessException ex,
             WebRequest request,
             Locale locale) {
-        String localizeMessage = messageSource.getMessage(ex.getMessageCode(), ex.getArgs(), locale);
+        String messageCode = ex.getErrorCode().getCode();
+        String localizeMessage = messageSource.getMessage(messageCode, ex.getArgs(), locale);
         ErrorResponse error = new ErrorResponse(
                 HttpStatus.NOT_FOUND.value(),
                 localizeMessage,
