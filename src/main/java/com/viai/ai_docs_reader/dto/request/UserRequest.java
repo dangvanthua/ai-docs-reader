@@ -23,5 +23,5 @@ public class UserRequest {
     @Size(min = 6, message = "{user.password.size}")
     private String password;
 
-    private String timeZone;
+    private String timezone;
 }

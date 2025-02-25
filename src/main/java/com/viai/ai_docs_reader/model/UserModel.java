@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.OffsetDateTime;
-import java.time.ZoneId;
 import java.time.ZoneOffset;
 
 @Getter
@@ -31,6 +30,7 @@ public class UserModel {
     @Column(name = "updated_at")
     private OffsetDateTime updatedAt;
 
+    @Column(name = "timezone")
     private String timezone;
 
     @PrePersist
