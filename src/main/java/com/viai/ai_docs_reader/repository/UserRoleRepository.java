@@ -1,4 +1,6 @@
 package com.viai.ai_docs_reader.repository;
 
-public interface UserRoleRepository {
+import com.viai.ai_docs_reader.model.UserRoleModel;
+
+public interface UserRoleRepository extends BaseRepository<UserRoleModel, Long>{
 }

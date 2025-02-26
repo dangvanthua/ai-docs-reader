@@ -20,8 +20,8 @@ public class UserServiceImpl extends BaseServiceImpl<UserModel, Long, UserReposi
 
     private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        super(userRepository);
+    public UserServiceImpl(UserRepository repository, PasswordEncoder passwordEncoder) {
+        super(repository);
         this.passwordEncoder = passwordEncoder;
     }
 

@@ -1,4 +1,6 @@
 package com.viai.ai_docs_reader.repository;
 
-public class RoleRepository {
+import com.viai.ai_docs_reader.model.RoleModel;
+
+public interface RoleRepository extends BaseRepository<RoleModel, Long> {
 }
