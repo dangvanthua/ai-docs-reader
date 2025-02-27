@@ -6,11 +6,13 @@ import com.viai.ai_docs_reader.exception.error.BusinessException;
 import com.viai.ai_docs_reader.model.RoleModel;
 import com.viai.ai_docs_reader.repository.RoleRepository;
 import com.viai.ai_docs_reader.service.base.BaseServiceImpl;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
+@Service
 public class RoleServiceImpl extends BaseServiceImpl<RoleModel, Long, RoleRepository> implements RoleService {
 
     public RoleServiceImpl(RoleRepository repository) {
@@ -19,6 +21,7 @@ public class RoleServiceImpl extends BaseServiceImpl<RoleModel, Long, RoleReposi
 
     @Override
     @Transactional
+    @PreAuthorize("hasRole('ADMIN')")
     public RoleModel createRole(RoleRequest roleRequest) {
         RoleModel roleModel = RoleModel.builder()
                 .roleName(roleRequest.getRoleName())
@@ -38,5 +41,11 @@ public class RoleServiceImpl extends BaseServiceImpl<RoleModel, Long, RoleReposi
     @Override
     public List<RoleModel> getAllRole() {
         return super.getAll();
+    }
+
+    @Override
+    public RoleModel getByRoleName(String roleName) {
+        return super.repository.findByRoleName(roleName)
+                .orElseThrow(() -> new BusinessException(ErrorCode.ROLE_NOT_EXISTED));
     }
 }
