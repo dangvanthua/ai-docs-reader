@@ -8,7 +8,9 @@ public enum ErrorCode {
     USER_NOT_EXISTED("error.user.not_existed"),
     USERNAME_EXISTS("error.username.exists"),
     EMAIL_EXISTS("error.email.exists"),
-    ROLE_NOT_EXISTED("error.role.not_existed");
+    ROLE_NOT_EXISTED("error.role.not_existed"),
+    INVALID_TYPE("error.file.invalid_type"),
+    UNSUPPORTED_FILE_TYPE("error.file.unsupported");
 
     private final String code;
 

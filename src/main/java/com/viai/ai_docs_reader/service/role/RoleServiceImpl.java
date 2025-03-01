@@ -1,5 +1,6 @@
 package com.viai.ai_docs_reader.service.role;
 
+import com.viai.ai_docs_reader.constant.RoleConstant;
 import com.viai.ai_docs_reader.dto.request.RoleRequest;
 import com.viai.ai_docs_reader.exception.ErrorCode;
 import com.viai.ai_docs_reader.exception.error.BusinessException;
@@ -23,14 +24,17 @@ public class RoleServiceImpl extends BaseServiceImpl<RoleModel, Long, RoleReposi
     @Transactional
     @PreAuthorize("hasRole('ADMIN')")
     public RoleModel createRole(RoleRequest roleRequest) {
+        String roleName = RoleConstant.valueOf(roleRequest.getRoleName()).name();
         RoleModel roleModel = RoleModel.builder()
-                .roleName(roleRequest.getRoleName())
+                .roleName(roleName.toUpperCase())
                 .description(roleRequest.getDescription())
                 .build();
         return super.save(roleModel);
     }
 
     @Override
+    @Transactional
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteRole(Long roleId) {
         RoleModel roleModel = super.getById(roleId)
                 .orElseThrow(() ->

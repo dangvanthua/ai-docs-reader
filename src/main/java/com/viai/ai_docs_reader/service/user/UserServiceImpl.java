@@ -8,11 +8,12 @@ import com.viai.ai_docs_reader.repository.UserRepository;
 import com.viai.ai_docs_reader.service.base.BaseServiceImpl;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -43,15 +44,15 @@ public class UserServiceImpl extends BaseServiceImpl<UserModel, Long, UserReposi
     }
 
     @Override
+    @PostAuthorize("returnObject.owner == authentication.name")
     public UserModel getUserById(Long userId) {
         return super.getById(userId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_EXISTED));
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public Page<UserModel> getAllUsers(Pageable pageable) {
         return super.repository.findAll(pageable);
     }
-
-
 }

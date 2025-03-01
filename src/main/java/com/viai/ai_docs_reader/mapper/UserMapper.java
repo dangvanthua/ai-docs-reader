@@ -2,7 +2,7 @@ package com.viai.ai_docs_reader.mapper;
 
 import com.viai.ai_docs_reader.dto.response.UserResponse;
 import com.viai.ai_docs_reader.model.UserModel;
-import com.viai.ai_docs_reader.util.TimeZoneUtils;
+import com.viai.ai_docs_reader.utils.TimeZoneUtils;
 
 import java.time.ZonedDateTime;
 

@@ -1,8 +1,9 @@
-package com.viai.ai_docs_reader.util;
+package com.viai.ai_docs_reader.utils;
 
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.rendering.PDFRenderer;
+import org.apache.pdfbox.text.PDFTextStripper;
+import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.springframework.web.multipart.MultipartFile;
@@ -10,30 +11,40 @@ import org.springframework.web.multipart.MultipartFile;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class FileConverter {
-    public static BufferedImage convertPdfToImage(MultipartFile file) throws IOException {
-        PDDocument document = Loader.loadPDF(file.getBytes());
-        PDFRenderer pdfRenderer = new PDFRenderer(document);
-        BufferedImage image = pdfRenderer.renderImageWithDPI(0, 300);
+    public static List<String> extractTextFromPdf(MultipartFile file) throws IOException {
+        List<String> pagesText = new ArrayList<>();
+        PDDocument document = Loader.loadPDF(file.getInputStream().readAllBytes());
+        PDFTextStripper stripper = new PDFTextStripper();
+        int totalPages = document.getNumberOfPages();
+        for (int i = 1; i <= totalPages; i++) {
+            stripper.setStartPage(i);
+            stripper.setEndPage(i);
+            String pageText = stripper.getText(document);
+            pagesText.add(pageText);
+        }
         document.close();
-        return image;
+        return pagesText;
     }
 
-    public static BufferedImage convertWordToImage(MultipartFile file) throws IOException {
-        XWPFDocument document = new XWPFDocument(file.getInputStream());
-        String text = document.getParagraphs().stream()
-                .map(XWPFParagraph::getText)
-                .collect(Collectors.joining("\n"));
+    public static List<String> extractTextFromDocx(MultipartFile file) throws IOException {
+        try (InputStream is = file.getInputStream();
+             XWPFDocument document = new XWPFDocument(is);
+             XWPFWordExtractor extractor = new XWPFWordExtractor(document)) {
 
-        BufferedImage image = new BufferedImage(800, 400, BufferedImage.TYPE_INT_RGB);
-        Graphics2D g = image.createGraphics();
-        g.setFont(new Font("Arial", Font.PLAIN, 18));
-        g.setColor(Color.BLACK);
-        g.drawString(text, 20, 100);
-        g.dispose();
+            String fullText = extractor.getText();
 
-        return image;
+            if (fullText.contains("\f")) {
+                return Arrays.asList(fullText.split("\f"));
+            } else {
+                return List.of(fullText);
+            }
+        }
     }
 }

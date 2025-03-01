@@ -1,4 +1,4 @@
-package com.viai.ai_docs_reader.util;
+package com.viai.ai_docs_reader.utils;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
