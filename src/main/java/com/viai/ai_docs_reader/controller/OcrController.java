@@ -30,7 +30,7 @@ public class OcrController {
                    .message("Extract text from file success")
                    .data(text)
                    .build();
-        } catch (IOException | TesseractException e) {
+        } catch (Exception e) {
             throw new BusinessException(ErrorCode.INVALID_TYPE);
         }
     }

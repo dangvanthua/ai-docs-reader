@@ -14,6 +14,12 @@ public class OcrConfig {
     @Value("${ocr.language}")
     private String language;
 
+    @Value("${ocr.psm:3}")
+    private int pageSegMode;
+
+    @Value("${ocr.oem:1}")
+    private int ocrEngineMode;
+
     @Bean
     public Tesseract tesseractBean() {
         Tesseract tesseract = new Tesseract();

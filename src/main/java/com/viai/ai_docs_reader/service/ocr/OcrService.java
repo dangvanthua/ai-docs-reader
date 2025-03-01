@@ -6,5 +6,5 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 public interface OcrService {
-    String processFile(MultipartFile file) throws IOException, TesseractException;
+    String processFile(MultipartFile file) throws Exception;
 }

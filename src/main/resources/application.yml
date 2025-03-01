@@ -32,3 +32,5 @@ ocr:
   tessdata:
     path: "C:\\Program Files\\Tesseract-OCR\\tessdata"
   language: vie
+  psm: 6
+  oem: 1
